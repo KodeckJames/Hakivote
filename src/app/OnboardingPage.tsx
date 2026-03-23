@@ -14,14 +14,16 @@ export default function OnboardingPage() {
           style={{ width: 200, height: 200 }}
           className=""
         />
-        <Text className=" text-3 font-bold text-4xl">HakiVote</Text>
+        <Text className=" text-3 font-bold text-4xl dark:text-white">
+          HakiVote
+        </Text>
       </View>
       <View className=" text-left pl-5 mt-5">
-        <Text className=" text-4xl">One Person.</Text>
-        <Text className=" text-4xl">One Vote.</Text>
+        <Text className=" text-4xl dark:text-white">One Person.</Text>
+        <Text className=" text-4xl dark:text-white">One Vote.</Text>
         <Text className=" text-4xl text-green-800">Verified.</Text>
-        <View className=" bg-green-900 w-20 h-2 mt-8" />
-        <Text className=" text-gray-600 text-xl mt-4 w-3/4" numberOfLines={3}>
+        <View className=" bg-green-900 w-20 h-2 my-6" />
+        <Text className=" text-gray-600 text-xl w-3/4" numberOfLines={3}>
           Secure, transparent, and modern democracy at your fingertips
         </Text>
       </View>
@@ -41,7 +43,7 @@ export default function OnboardingPage() {
             />
           </View>
         </Pressable>
-        <Text className=" text-center text-lg">
+        <Text className=" text-center text-lg dark:text-white">
           Already registered? <Text className=" underline">Login</Text>
         </Text>
         <View className=" flex-row justify-between px-4">
