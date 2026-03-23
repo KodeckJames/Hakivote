@@ -2,6 +2,7 @@ import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -24,13 +25,36 @@ export default function OnboardingPage() {
           Secure, transparent, and modern democracy at your fingertips
         </Text>
       </View>
-
-      <Pressable
-        className=" absolute bottom-5 p-2 left-40 bg-blue-600 rounded-2xl"
-        onPress={() => router.push('/(tabs)')}
-      >
-        <Text className=" text-xl">Home</Text>
-      </Pressable>
+      <View className=" flex-1 mt-20 gap-8">
+        <Pressable
+          onPress={() => router.push('/(tabs)')}
+          className=" flex p-6 rounded-full justify-center items-center flex-row gap-4 self-center bg-green-900"
+        >
+          <Text className=" text-white text-xl">
+            Verify Identity & Register
+          </Text>
+          <View className=" bg-green-600 p-1 rounded-full">
+            <MaterialCommunityIcons
+              name="arrow-right"
+              size={20}
+              color="yellow"
+            />
+          </View>
+        </Pressable>
+        <Text className=" text-center text-lg">
+          Already registered? <Text className=" underline">Login</Text>
+        </Text>
+        <View className=" flex-row justify-between px-4">
+          <View className=" flex-row">
+            <MaterialCommunityIcons name="lock" size={20} color="#6B7280" />
+            <Text className=" text-gray-500">END-TO-END ENCRYPTED</Text>
+          </View>
+          <View className=" flex-row">
+            <MaterialCommunityIcons name="hammer" size={20} color="#6B7280" />
+            <Text className=" text-gray-500">IEBC COMPLIANT</Text>
+          </View>
+        </View>
+      </View>
     </View>
   )
 }
