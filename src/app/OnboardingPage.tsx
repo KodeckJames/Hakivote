@@ -17,9 +17,9 @@ export default function OnboardingPage() {
         <Text className=" text-3 font-bold text-4xl">HakiVote</Text>
       </View>
       <View className=" text-left pl-5 mt-5">
-        <Text className=" text-4xl">One Person</Text>
-        <Text className=" text-4xl">One Vote</Text>
-        <Text className=" text-4xl text-green-800">Verified</Text>
+        <Text className=" text-4xl">One Person.</Text>
+        <Text className=" text-4xl">One Vote.</Text>
+        <Text className=" text-4xl text-green-800">Verified.</Text>
         <View className=" bg-green-900 w-20 h-2 mt-8" />
         <Text className=" text-gray-600 text-xl mt-4 w-3/4" numberOfLines={3}>
           Secure, transparent, and modern democracy at your fingertips
