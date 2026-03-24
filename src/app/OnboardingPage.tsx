@@ -29,7 +29,7 @@ export default function OnboardingPage() {
       </View>
       <View className=" flex-1 mt-20 gap-8">
         <Pressable
-          onPress={() => router.push('/(tabs)')}
+          onPress={() => router.push('/BallotLocation')}
           className=" flex p-6 rounded-full justify-center items-center flex-row gap-4 self-center bg-green-900"
         >
           <Text className=" text-white text-xl">
@@ -43,9 +43,14 @@ export default function OnboardingPage() {
             />
           </View>
         </Pressable>
-        <Text className=" text-center text-lg dark:text-white">
-          Already registered? <Text className=" underline">Login</Text>
-        </Text>
+        <View className=" flex items-center justify-center flex-row">
+          <Text className=" text-center text-lg dark:text-white">
+            Already registered?{' '}
+          </Text>
+          <Pressable onPress={() => router.push('/(tabs)')}>
+            <Text className=" underline dark:text-white text-lg">Login</Text>
+          </Pressable>
+        </View>
         <View className=" flex-row justify-between px-4">
           <View className=" flex-row">
             <MaterialCommunityIcons name="lock" size={20} color="#6B7280" />

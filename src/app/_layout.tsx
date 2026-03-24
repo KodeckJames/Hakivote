@@ -21,7 +21,7 @@ export default function TabLayout() {
   return (
     <KeyboardProvider>
       <SafeAreaProvider>
-        <SafeAreaView style={{flex:1}} >
+        <SafeAreaView style={{ flex: 1 }}>
           <ThemeProvider
             value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
@@ -29,11 +29,17 @@ export default function TabLayout() {
             <StatusBar
               animated
               backgroundColor={colorScheme === 'dark' ? '#000' : '#fff'}
-              barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+              barStyle={
+                colorScheme === 'dark' ? 'light-content' : 'dark-content'
+              }
             />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="OnboardingPage" />
-              <Stack.Screen name="(tabs)" />
+            <Stack screenOptions={{}}>
+              <Stack.Screen
+                name="OnboardingPage"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="BallotLocation" />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
           </ThemeProvider>
         </SafeAreaView>
