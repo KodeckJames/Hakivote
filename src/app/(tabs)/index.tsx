@@ -1,102 +1,108 @@
-import * as Device from 'expo-device';
-import { Platform, Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, Pressable, ScrollView } from 'react-native'
+import React from 'react'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { useRouter } from 'expo-router'
+import BallotSection, { Candidate } from '@/components/ui/BallotSelection';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useRouter } from 'expo-router';
+const presidentialCandidates: Candidate[] = [
+  {
+    id: 'c1',
+    name: 'Dr. David Omondi',
+    party: 'Progressive Alliance',
+    avatar: 'https://i.pravatar.cc/150?img=11',
+  },
+  {
+    id: 'c2',
+    name: 'Hon. Amina Juma',
+    party: 'Unity Party of Kenya',
+    avatar: 'https://i.pravatar.cc/150?img=45',
+  },
+  {
+    id: 'c3',
+    name: 'Prof. Samuel Mutua',
+    party: 'Independent',
+    avatar: 'https://i.pravatar.cc/150?img=52',
+  },
+];
+ 
+const governorCandidates: Candidate[] = [
+  {
+    id: 'g1',
+    name: 'Jane Wanjiku',
+    party: 'Progressive Alliance',
+    avatar: 'https://i.pravatar.cc/150?img=32',
+  },
+  {
+    id: 'g2',
+    name: 'Peter Kamau',
+    party: 'Unity Party of Kenya',
+    avatar: 'https://i.pravatar.cc/150?img=60',
+  },
+];
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function HomePage() {
+  const router = useRouter()
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
+    <View className=' min-h-screen'>
+      <Text className=" dark:text-white font-bold text-4xl mt-4">
+        Your Ballot
+      </Text>
+      <View className=" flex-row items-center gap-2">
+        <Ionicons name="location" size={20} color="green" />
+        <Text className=" dark:text-white font-bold text-lg mt-4">
+          Nairobi County
+        </Text>
+        <Ionicons name="ellipse" size={20} color="green" />
+        <Text className=" dark:text-white font-bold text-lg mt-4">
+          Westlands Constituency
+        </Text>
+      </View>
+      <View className=" flex-row items-center gap-2">
+        <Ionicons name="ellipse-outline" size={20} color="green" />
+        <Text className=" dark:text-white font-bold text-lg mt-4">
+          Clay City Ward
+        </Text>
+      </View>
+
+      <ScrollView
+      className="flex-1 min-h-full"
+      contentContainerStyle={{ paddingVertical: 16 }}
+    >
+      {/* Presidential ballot – expanded by default */}
+      <BallotSection
+        category="National Executive"
+        title="President"
+        description="Choose one candidate to lead the Republic of Kenya for the next 5-year term."
+        candidates={presidentialCandidates}
+        defaultExpanded={true}
+        onSelectionChange={(id) => console.log('President selection:', id)}
+      />
+ 
+      {/* Governor ballot – collapsed by default */}
+      <BallotSection
+        category="County Executive"
+        title="Governor"
+        description="Choose one candidate to lead your county for the next 5-year term."
+        candidates={governorCandidates}
+        defaultExpanded={false}
+        onSelectionChange={(id) => console.log('Governor selection:', id)}
+      />
+ 
+      {/* Senator ballot – no candidates yet */}
+      <BallotSection
+        category="County Legislature"
+        title="Senator"
+        description="Choose your preferred senator."
+        candidates={[]}
+        defaultExpanded={false}
+      />
+    </ScrollView>
+
+      <Pressable onPress={() => router.push('/OnboardingPage')} className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 ">
+        <Text className=" dark:text-white text-center font-bold text-lg">
+         Onboarding
+        </Text>
+      </Pressable>
+    </View>
+  )
 }
-
-export default function HomeScreen() {
-  const router = useRouter();
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <Pressable onPress={() => router.push('/OnboardingPage')}>
-          <ThemedText type="code" style={styles.code}>
-            Go to Onboarding
-          </ThemedText>
-        </Pressable>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});

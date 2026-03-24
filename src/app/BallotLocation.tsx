@@ -78,7 +78,7 @@ export default function BallotLocation() {
         <VerificationBanner />
       </View>
       <Pressable
-        onPress={() => router.push('/BallotLocation')}
+        onPress={() => router.push('/(tabs)')}
         className=" flex p-6 mt-12 rounded-3xl justify-center items-center flex-row gap-4 self-center bg-green-900"
       >
         <Text className=" text-white text-xl text-center">
