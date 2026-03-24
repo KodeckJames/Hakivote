@@ -35,7 +35,10 @@ export default function TabLayout() {
                 name="OnboardingPage"
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="BallotLocation" />
+              <Stack.Screen
+                name="BallotLocation"
+                options={{ headerTitle: 'HakiVote' }}
+              />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
           </ThemeProvider>

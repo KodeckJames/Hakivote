@@ -52,13 +52,13 @@ export default function OnboardingPage() {
           </Pressable>
         </View>
         <View className=" flex-row justify-between px-4">
-          <View className=" flex-row">
-            <MaterialCommunityIcons name="lock" size={20} color="#6B7280" />
-            <Text className=" text-gray-500">END-TO-END ENCRYPTED</Text>
+          <View className=" flex-row gap-1">
+            <MaterialCommunityIcons name="lock" className=' mt-2' size={20} color="#6B7280" />
+            <Text className=" text-gray-500 text-center">END-TO-END{"\n"} ENCRYPTED</Text>
           </View>
           <View className=" flex-row">
-            <MaterialCommunityIcons name="hammer" size={20} color="#6B7280" />
-            <Text className=" text-gray-500">IEBC COMPLIANT</Text>
+            <MaterialCommunityIcons name="hammer" className=' mt-2' size={20} color="#6B7280" />
+            <Text className=" text-gray-500 text-center">IEBC{"\n"} COMPLIANT</Text>
           </View>
         </View>
       </View>
