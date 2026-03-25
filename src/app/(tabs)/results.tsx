@@ -8,11 +8,11 @@ import TabsComponent from '@/components/ui/TabsComponent'
 
 export default function ResultsPage() {
   return (
-    <View className=" flex min-h-screen">
+    <View className=" flex-1">
       <Text className=" dark:text-white ml-4 font-bold text-4xl mt-4">
         Live Results
       </Text>
-      <View className=" flex flex-row items-center gap-2">
+      {/* <View className=" flex flex-row items-center gap-2">
         <Text className=" dark:text-white ml-4 font-bold text-xl mt-4">
           Last updated:
         </Text>
@@ -20,8 +20,8 @@ export default function ResultsPage() {
           Just now
         </Text>
         <Ioicons name="ellipse" size={20} color="green" className=" mt-4" />
-      </View>
-      <Ionicons name='map-outline' size={40} color="green" className=' absolute top-10 right-10'/>
+      </View> */}
+      <Ionicons name='map-outline' size={40} color="green" className=' absolute top-3 right-10'/>
       <CountDownUI/>
       <TallyCard/>
       <TabsComponent/>
