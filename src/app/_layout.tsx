@@ -8,6 +8,7 @@ import { useColorScheme } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { AnimatedSplashOverlay } from '@/components/animated-icon'
 import AppTabs from '@/components/app-tabs'
 import { StatusBar } from 'expo-status-bar'
@@ -17,33 +18,35 @@ import '../../global.css'
 export default function TabLayout() {
   const colorScheme = useColorScheme()
   return (
-    <KeyboardProvider>
-      <SafeAreaProvider>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
-          }}
-        >
-          <ThemeProvider
-            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <KeyboardProvider>
+        <SafeAreaProvider>
+          <SafeAreaView
+            style={{
+              flex: 1,
+              backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+            }}
           >
-            <AnimatedSplashOverlay />
-            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            <Stack screenOptions={{}}>
-              <Stack.Screen
-                name="OnboardingPage"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="BallotLocation"
-                options={{ headerTitle: 'HakiVote' }}
-              />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
-          </ThemeProvider>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </KeyboardProvider>
+            <ThemeProvider
+              value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+            >
+              <AnimatedSplashOverlay />
+              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              <Stack screenOptions={{}}>
+                <Stack.Screen
+                  name="OnboardingPage"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="BallotLocation"
+                  options={{ headerTitle: 'HakiVote' }}
+                />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </ThemeProvider>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </KeyboardProvider>
+    </GestureHandlerRootView>
   )
 }

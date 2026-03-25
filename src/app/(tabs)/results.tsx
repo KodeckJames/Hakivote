@@ -4,6 +4,7 @@ import Ioicons from '@expo/vector-icons/Ionicons'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import TallyCard from '@/components/ui/TallyCard'
 import CountDownUI from '@/components/ui/CountDownUI'
+import TabsComponent from '@/components/ui/TabsComponent'
 
 export default function ResultsPage() {
   return (
@@ -23,6 +24,7 @@ export default function ResultsPage() {
       <Ionicons name='map-outline' size={40} color="green" className=' absolute top-10 right-10'/>
       <CountDownUI/>
       <TallyCard/>
+      <TabsComponent/>
     </View>
   )
 }
