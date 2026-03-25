@@ -9,8 +9,9 @@ export default function TabsComponent() {
         <TabsTrigger value="tab1">President</TabsTrigger>
         <TabsTrigger value="tab2">Governor</TabsTrigger>
         <TabsTrigger value="tab3">Senator</TabsTrigger>
-        <TabsTrigger value="tab4">MCA</TabsTrigger>
-        <TabsTrigger value="tab5">Women Rep</TabsTrigger>
+        <TabsTrigger value="tab4">MP</TabsTrigger>
+        <TabsTrigger value="tab5">MCA</TabsTrigger>
+        <TabsTrigger value="tab6">Women Rep</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
         <PresidentResults />
@@ -22,10 +23,13 @@ export default function TabsComponent() {
         <Text>Content for Tab 3</Text>
       </TabsContent>
       <TabsContent value="tab4">
-        <Text>Content for Tab 3</Text>
+        <Text>Content for Tab 4</Text>
       </TabsContent>
       <TabsContent value="tab5">
-        <Text>Content for Tab 3</Text>
+        <Text>Content for Tab 5</Text>
+      </TabsContent>
+      <TabsContent value="tab6">
+        <Text>Content for Tab 6</Text>
       </TabsContent>
     </Tabs>
   )
