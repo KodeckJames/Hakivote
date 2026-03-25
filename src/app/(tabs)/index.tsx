@@ -1,8 +1,10 @@
-import { View, Text, Pressable, ScrollView } from 'react-native'
-import React from 'react'
-import Ionicons from '@expo/vector-icons/Ionicons'
-import { useRouter } from 'expo-router'
 import BallotSection, { Candidate } from '@/components/ui/BallotSelection'
+import BallotFooter, { SubmitStatus } from '@/components/ui/BallotFooter'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React, { useState, useCallback } from 'react'
+import { ScrollView, Text, View } from 'react-native'
+
+// ─── Dummy data ───────────────────────────────────────────────────────────────
 
 const presidentialCandidates: Candidate[] = [
   {
@@ -40,26 +42,66 @@ const governorCandidates: Candidate[] = [
   },
 ]
 
+// Races with no candidates yet — footer still tracks them as incomplete
+const senatorCandidates: Candidate[] = []
+
+// ─── Race IDs — must stay in sync with totalRaces={3} in BallotFooter ─────────
+
+const RACE_PRESIDENT = 'president'
+const RACE_GOVERNOR  = 'governor'
+const RACE_SENATOR   = 'senator'
+
+// ─── Screen ───────────────────────────────────────────────────────────────────
+
 export default function HomePage() {
-  const router = useRouter()
+  // Map of raceId → selected candidateId (null = unselected)
+  const [selections, setSelections] = useState<Record<string, string | null>>({})
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle')
+
+  const handleSelection = useCallback((raceId: string, candidateId: string | null) => {
+    setSelections(prev => ({ ...prev, [raceId]: candidateId }))
+  }, [])
+
+  // IDs of races where a candidate has been chosen
+  const completedRaceIds = Object.entries(selections)
+    .filter(([, candidateId]) => candidateId !== null)
+    .map(([raceId]) => raceId)
+
+  const handleSubmit = async () => {
+    if (submitStatus === 'loading') return
+    setSubmitStatus('loading')
+
+    try {
+      // Replace with your actual API call, e.g.:
+      // await api.submitBallot(selections)
+      await new Promise(resolve => setTimeout(resolve, 1800))
+      setSubmitStatus('success')
+    } catch {
+      setSubmitStatus('error')
+      setTimeout(() => setSubmitStatus('idle'), 3000)
+    }
+  }
+
   return (
-    <View className=" min-h-screen">
-      <Text className=" dark:text-white font-bold text-4xl mt-4">
+    <View className="min-h-screen">
+      <Text className="dark:text-white font-bold text-4xl mt-4">
         Your Ballot
       </Text>
-      <View className=" flex-row items-center gap-2">
+
+      <View className="flex-row items-center gap-2">
         <Ionicons name="location" size={20} color="green" />
-        <Text className=" dark:text-white font-bold text-lg mt-4">
+        <Text className="dark:text-white font-bold text-lg mt-4">
           Nairobi County
         </Text>
         <Ionicons name="ellipse" size={20} color="green" />
-        <Text className=" dark:text-white font-bold text-lg mt-4">
+        <Text className="dark:text-white font-bold text-lg mt-4">
           Westlands Constituency
         </Text>
       </View>
-      <View className=" flex-row items-center gap-2">
+
+      <View className="flex-row items-center gap-2">
         <Ionicons name="ellipse-outline" size={20} color="green" />
-        <Text className=" dark:text-white font-bold text-lg mt-4">
+        <Text className="dark:text-white font-bold text-lg mt-4">
           Clay City Ward
         </Text>
       </View>
@@ -67,46 +109,42 @@ export default function HomePage() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingVertical: 16, paddingBottom: 300 }}
       >
-        {/* Presidential ballot – expanded by default */}
         <BallotSection
           category="National Executive"
           title="President"
           description="Choose one candidate to lead the Republic of Kenya for the next 5-year term."
           candidates={presidentialCandidates}
           defaultExpanded={true}
-          onSelectionChange={(id) => console.log('President selection:', id)}
+          onSelectionChange={(id) => handleSelection(RACE_PRESIDENT, id)}
         />
 
-        {/* Governor ballot – collapsed by default */}
         <BallotSection
           category="County Executive"
           title="Governor"
           description="Choose one candidate to lead your county for the next 5-year term."
           candidates={governorCandidates}
           defaultExpanded={false}
-          onSelectionChange={(id) => console.log('Governor selection:', id)}
+          onSelectionChange={(id) => handleSelection(RACE_GOVERNOR, id)}
         />
 
-        {/* Senator ballot – no candidates yet */}
         <BallotSection
           category="County Legislature"
           title="Senator"
           description="Choose your preferred senator."
-          candidates={[]}
+          candidates={governorCandidates}
           defaultExpanded={false}
+          onSelectionChange={(id) => handleSelection(RACE_SENATOR, id)}
         />
       </ScrollView>
 
-      <Pressable
-        onPress={() => router.push('/OnboardingPage')}
-        className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 "
-      >
-        <Text className=" dark:text-white text-center font-bold text-lg">
-          Onboarding
-        </Text>
-      </Pressable>
+      <BallotFooter
+        totalRaces={3}
+        completedRaceIds={completedRaceIds}
+        onSubmit={handleSubmit}
+        submitStatus={submitStatus}
+      />
     </View>
   )
 }
