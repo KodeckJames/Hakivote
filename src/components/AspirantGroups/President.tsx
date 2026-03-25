@@ -52,7 +52,7 @@ export default function PresidentResults() {
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{ paddingVertical: 16 }}
-      showsVerticalScrollIndicator={true}
+      showsVerticalScrollIndicator={false}
     >
       {/* Presidential race — live, auto-derives total */}
       <RaceResults
