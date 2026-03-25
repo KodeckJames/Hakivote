@@ -2,8 +2,10 @@ import { CountdownTimer } from '@/components/CountDown'
 import { useFonts } from 'expo-font'
 import { StyleSheet, Text, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { useColorScheme } from 'react-native'
 
 export default function CountDownUI() {
+  const colorScheme = useColorScheme()
   const [fontLoaded] = useFonts({
     SfProRounded: require('@/assets/fonts/sf-pro-rounded.ttf'),
     HelveticaNowDisplay: require('@/assets/fonts/HelveticaNowDisplayMedium.ttf'),
@@ -25,7 +27,7 @@ export default function CountDownUI() {
         <CountdownTimer
           targetDate={launchDate}
           customization={{
-            numberColor: '#fff',
+            numberColor: colorScheme === 'dark' ? '#fff' : '#000',
             labelColor: 'green',
             separatorColor: 'green',
             showLabels: true,
