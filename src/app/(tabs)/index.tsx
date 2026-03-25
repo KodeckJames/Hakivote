@@ -2,7 +2,7 @@ import { View, Text, Pressable, ScrollView } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useRouter } from 'expo-router'
-import BallotSection, { Candidate } from '@/components/ui/BallotSelection';
+import BallotSection, { Candidate } from '@/components/ui/BallotSelection'
 
 const presidentialCandidates: Candidate[] = [
   {
@@ -23,8 +23,8 @@ const presidentialCandidates: Candidate[] = [
     party: 'Independent',
     avatar: 'https://i.pravatar.cc/150?img=52',
   },
-];
- 
+]
+
 const governorCandidates: Candidate[] = [
   {
     id: 'g1',
@@ -38,12 +38,12 @@ const governorCandidates: Candidate[] = [
     party: 'Unity Party of Kenya',
     avatar: 'https://i.pravatar.cc/150?img=60',
   },
-];
+]
 
 export default function HomePage() {
   const router = useRouter()
   return (
-    <View className=' min-h-screen'>
+    <View className=" min-h-screen">
       <Text className=" dark:text-white font-bold text-4xl mt-4">
         Your Ballot
       </Text>
@@ -65,42 +65,46 @@ export default function HomePage() {
       </View>
 
       <ScrollView
-      className="flex-1 min-h-full"
-      contentContainerStyle={{ paddingVertical: 16 }}
-    >
-      {/* Presidential ballot – expanded by default */}
-      <BallotSection
-        category="National Executive"
-        title="President"
-        description="Choose one candidate to lead the Republic of Kenya for the next 5-year term."
-        candidates={presidentialCandidates}
-        defaultExpanded={true}
-        onSelectionChange={(id) => console.log('President selection:', id)}
-      />
- 
-      {/* Governor ballot – collapsed by default */}
-      <BallotSection
-        category="County Executive"
-        title="Governor"
-        description="Choose one candidate to lead your county for the next 5-year term."
-        candidates={governorCandidates}
-        defaultExpanded={false}
-        onSelectionChange={(id) => console.log('Governor selection:', id)}
-      />
- 
-      {/* Senator ballot – no candidates yet */}
-      <BallotSection
-        category="County Legislature"
-        title="Senator"
-        description="Choose your preferred senator."
-        candidates={[]}
-        defaultExpanded={false}
-      />
-    </ScrollView>
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 16, paddingBottom: 100 }}
+      >
+        {/* Presidential ballot – expanded by default */}
+        <BallotSection
+          category="National Executive"
+          title="President"
+          description="Choose one candidate to lead the Republic of Kenya for the next 5-year term."
+          candidates={presidentialCandidates}
+          defaultExpanded={true}
+          onSelectionChange={(id) => console.log('President selection:', id)}
+        />
 
-      <Pressable onPress={() => router.push('/OnboardingPage')} className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 ">
+        {/* Governor ballot – collapsed by default */}
+        <BallotSection
+          category="County Executive"
+          title="Governor"
+          description="Choose one candidate to lead your county for the next 5-year term."
+          candidates={governorCandidates}
+          defaultExpanded={false}
+          onSelectionChange={(id) => console.log('Governor selection:', id)}
+        />
+
+        {/* Senator ballot – no candidates yet */}
+        <BallotSection
+          category="County Legislature"
+          title="Senator"
+          description="Choose your preferred senator."
+          candidates={[]}
+          defaultExpanded={false}
+        />
+      </ScrollView>
+
+      <Pressable
+        onPress={() => router.push('/OnboardingPage')}
+        className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 "
+      >
         <Text className=" dark:text-white text-center font-bold text-lg">
-         Onboarding
+          Onboarding
         </Text>
       </Pressable>
     </View>
