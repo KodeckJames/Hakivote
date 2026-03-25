@@ -84,11 +84,11 @@ export default function HomePage() {
 
   return (
     <View className="min-h-screen">
-      <Text className="dark:text-white font-bold text-4xl mt-4">
+      <Text className="dark:text-white ml-4 font-bold text-4xl mt-4">
         Your Ballot
       </Text>
 
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center ml-4 gap-2">
         <Ionicons name="location" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
           Nairobi County
@@ -99,7 +99,7 @@ export default function HomePage() {
         </Text>
       </View>
 
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center ml-4 gap-2">
         <Ionicons name="ellipse-outline" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
           Clay City Ward
