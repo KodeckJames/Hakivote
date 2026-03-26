@@ -9,36 +9,108 @@ import { ScrollView, Text, View } from 'react-native'
 const presidentialCandidates: Candidate[] = [
   {
     id: 'c1',
-    name: 'Dr. David Omondi',
-    party: 'Progressive Alliance',
-    avatar: 'https://i.pravatar.cc/150?img=11',
+    name: 'Edwin Sifuna',
+    party: 'ODM',
+    avatar: require('@/assets/images/Presidents/SifunaImage.png'),
   },
   {
     id: 'c2',
-    name: 'Hon. Amina Juma',
-    party: 'Unity Party of Kenya',
-    avatar: 'https://i.pravatar.cc/150?img=45',
+    name: 'David Maraga',
+    party: 'Independent',
+    avatar: require('@/assets/images/Presidents/MaragaImage.jpg'),
+
   },
   {
     id: 'c3',
-    name: 'Prof. Samuel Mutua',
+    name: 'Fred Matiang\'i',
+    party: 'Jubilee',
+    avatar: require('@/assets/images/Presidents/MatiangiImage.jpg'),
+
+  },
+  {
+    id: 'c4',
+    name: 'Rigathi Gachagua',
     party: 'Independent',
-    avatar: 'https://i.pravatar.cc/150?img=52',
+    avatar: require('@/assets/images/Presidents/GachaguaImage.jpg'),
+  },
+  {
+    id: 'c5',
+    name: 'Kalonzo Musyoka',
+    party: 'Independent',
+    avatar: require('@/assets/images/Presidents/KalonzoImage.jpg'),
+  },
+  {
+    id: 'c6',
+    name: 'William Ruto',
+    party: 'UDA',
+    avatar: require('@/assets/images/Presidents/RutoImage.jpg'),
   },
 ]
 
 const governorCandidates: Candidate[] = [
   {
     id: 'g1',
-    name: 'Jane Wanjiku',
-    party: 'Progressive Alliance',
-    avatar: 'https://i.pravatar.cc/150?img=32',
+    name: 'Babu Owino',
+    party: 'ODM',
+    avatar: require('@/assets/images/Governors/BabuImage.jpg'),
   },
   {
     id: 'g2',
-    name: 'Peter Kamau',
-    party: 'Unity Party of Kenya',
-    avatar: 'https://i.pravatar.cc/150?img=60',
+    name: 'Millicent Omanga',
+    party: 'Jubilee',
+    avatar: require('@/assets/images/Governors/OmangaImage.jpg'),
+  },
+  {
+    id: 'g3',
+    name: 'Johnson Sakaja',
+    party: 'UDA',
+    avatar: require('@/assets/images/Governors/SakajaImage.jpg'),
+  },
+]
+const MPCandidates: Candidate[] = [
+  {
+    id: 'mp1',
+    name: 'Ronald Karauri',
+    party: 'Independent',
+    avatar: require('@/assets/images/MPs/KarauriImage.jpeg'),
+  },
+  {
+    id: 'mp2',
+    name: 'Phelix Odiwuor',
+    party: 'ODM',
+    avatar: require('@/assets/images/MPs/JalangoImage.jpg'),
+  },
+  {
+    id: 'mp3',
+    name: 'Karen Nyamu',
+    party: 'UDA',
+    avatar: require('@/assets/images/MPs/NyamuImage.png'),
+  },
+]
+const MCACandidates: Candidate[] = [
+  {
+    id: 'mca1',
+    name: 'Mwaura Samora',
+    party: 'UDA',
+    avatar: require('@/assets/images/MCAs/SamoraImage.jpeg'),
+  },
+  {
+    id: 'mca2',
+    name: 'Kevin Gitonga',
+    party: 'ODM',
+    avatar: require('@/assets/images/MCAs/GitongaImage.jpg'),
+  },
+  {
+    id: 'mca3',
+    name: 'Brian Maina',
+    party: 'Independent',
+    avatar: require('@/assets/images/MCAs/MainaImage.jpg'),
+  },
+  {
+    id: 'mca4',
+    name: 'Hosea Wambugu',
+    party: 'Jubilee',
+    avatar: require('@/assets/images/MCAs/WambuguImage.jpg'),
   },
 ]
 
@@ -49,7 +121,8 @@ const senatorCandidates: Candidate[] = []
 
 const RACE_PRESIDENT = 'president'
 const RACE_GOVERNOR  = 'governor'
-const RACE_SENATOR   = 'senator'
+const RACE_MP   = 'mp'
+const RACE_MCA   = 'mca'
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
@@ -128,19 +201,26 @@ export default function HomePage() {
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_GOVERNOR, id)}
         />
-
         <BallotSection
           category="County Legislature"
-          title="Senator"
-          description="Choose your preferred senator."
-          candidates={governorCandidates}
+          title="MP"
+          description="Choose your preferred MP."
+          candidates={MPCandidates}
           defaultExpanded={false}
-          onSelectionChange={(id) => handleSelection(RACE_SENATOR, id)}
+          onSelectionChange={(id) => handleSelection(RACE_MP, id)}
+        />
+        <BallotSection
+          category="County Legislature"
+          title="MCA"
+          description="Choose your preferred MCA."
+          candidates={MCACandidates}
+          defaultExpanded={false}
+          onSelectionChange={(id) => handleSelection(RACE_MCA, id)}
         />
       </ScrollView>
 
       <BallotFooter
-        totalRaces={3}
+        totalRaces={4}
         completedRaceIds={completedRaceIds}
         onSubmit={handleSubmit}
         submitStatus={submitStatus}
