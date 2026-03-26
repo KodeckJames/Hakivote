@@ -95,7 +95,7 @@ export default function HomePage() {
         </Text>
         <Ionicons name="ellipse" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
-          Westlands Constituency
+          Kasarani Constituency
         </Text>
       </View>
 
