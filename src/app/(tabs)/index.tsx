@@ -18,14 +18,12 @@ const presidentialCandidates: Candidate[] = [
     name: 'David Maraga',
     party: 'Independent',
     avatar: require('@/assets/images/Presidents/MaragaImage.jpg'),
-
   },
   {
     id: 'c3',
-    name: 'Fred Matiang\'i',
+    name: "Fred Matiang'i",
     party: 'Jubilee',
     avatar: require('@/assets/images/Presidents/MatiangiImage.jpg'),
-
   },
   {
     id: 'c4',
@@ -113,6 +111,26 @@ const MCACandidates: Candidate[] = [
     avatar: require('@/assets/images/MCAs/WambuguImage.jpg'),
   },
 ]
+const WomenRepCandidates: Candidate[] = [
+  {
+    id: 'wr1',
+    name: 'Hanifa Adan',
+    party: 'UDA',
+    avatar: require('@/assets/images/WomenReps/HanifaImage.png'),
+  },
+  {
+    id: 'wr2',
+    name: 'Esther Passaris',
+    party: 'ODM',
+    avatar: require('@/assets/images/WomenReps/PassarisImage.jpg'),
+  },
+  {
+    id: 'wr3',
+    name: 'Gloria Orwoba',
+    party: 'Independent',
+    avatar: require('@/assets/images/WomenReps/OrwobaImage.png'),
+  },
+]
 
 // Races with no candidates yet — footer still tracks them as incomplete
 const senatorCandidates: Candidate[] = []
@@ -120,20 +138,26 @@ const senatorCandidates: Candidate[] = []
 // ─── Race IDs — must stay in sync with totalRaces={3} in BallotFooter ─────────
 
 const RACE_PRESIDENT = 'president'
-const RACE_GOVERNOR  = 'governor'
-const RACE_MP   = 'mp'
-const RACE_MCA   = 'mca'
+const RACE_GOVERNOR = 'governor'
+const RACE_MP = 'mp'
+const RACE_MCA = 'mca'
+const RACE_WOMENREP = 'womenrep'
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   // Map of raceId → selected candidateId (null = unselected)
-  const [selections, setSelections] = useState<Record<string, string | null>>({})
+  const [selections, setSelections] = useState<Record<string, string | null>>(
+    {}
+  )
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle')
 
-  const handleSelection = useCallback((raceId: string, candidateId: string | null) => {
-    setSelections(prev => ({ ...prev, [raceId]: candidateId }))
-  }, [])
+  const handleSelection = useCallback(
+    (raceId: string, candidateId: string | null) => {
+      setSelections((prev) => ({ ...prev, [raceId]: candidateId }))
+    },
+    []
+  )
 
   // IDs of races where a candidate has been chosen
   const completedRaceIds = Object.entries(selections)
@@ -147,7 +171,7 @@ export default function HomePage() {
     try {
       // Replace with your actual API call, e.g.:
       // await api.submitBallot(selections)
-      await new Promise(resolve => setTimeout(resolve, 1800))
+      await new Promise((resolve) => setTimeout(resolve, 1800))
       setSubmitStatus('success')
     } catch {
       setSubmitStatus('error')
@@ -217,10 +241,18 @@ export default function HomePage() {
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_MCA, id)}
         />
-      </ScrollView>
+        <BallotSection
+          category="County Legislature"
+          title="WomenRep"
+          description="Choose your preferred WomenRep."
+          candidates={WomenRepCandidates}
+          defaultExpanded={false}
+          onSelectionChange={(id) => handleSelection(RACE_WOMENREP, id)}
+        />
+      </ScrollView> 
 
       <BallotFooter
-        totalRaces={4}
+        totalRaces={5}
         completedRaceIds={completedRaceIds}
         onSubmit={handleSubmit}
         submitStatus={submitStatus}
