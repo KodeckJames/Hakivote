@@ -32,11 +32,11 @@ export default function ProfilePage() {
       </Text>
       <ActualVoterProfile />
       <Pressable
-        onPress={() => router.push('/OtpInput')}
+        onPress={() => router.push('/OnboardingPage')}
         className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 "
       >
         <Text className=" dark:text-white text-center font-bold text-lg">
-          Onboarding
+          Log Out
         </Text>
       </Pressable>
     </View>
