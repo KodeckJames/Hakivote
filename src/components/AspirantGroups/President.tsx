@@ -2,46 +2,50 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import RaceResults, { RaceCandidate } from '@/components/ui/AspirantsResults';
 
-// ─── Dummy data ───────────────────────────────────────────────────────────────
+// ─── Candidates ───────────────────────────────────────────────────────────────
 
-const presidentCandidates: RaceCandidate[] = [
+const presidentialCandidates: RaceCandidate[] = [
   {
-    id: 'p1',
-    name: 'David Kamau',
-    party: 'United Front (UF)',
-    avatar: 'https://i.pravatar.cc/150?img=11',
+    id: 'c1',
+    name: 'Edwin Sifuna',
+    party: 'ODM',
+    avatar: require('@/assets/images/Presidents/SifunaImage.png'),
+    votes: 48_320,
+  },
+  {
+    id: 'c2',
+    name: 'David Maraga',
+    party: 'Independent',
+    avatar: require('@/assets/images/Presidents/MaragaImage.jpg'),
+    votes: 35_780,
+  },
+  {
+    id: 'c3',
+    name: "Fred Matiang'i",
+    party: 'Jubilee',
+    avatar: require('@/assets/images/Presidents/MatiangiImage.jpg'),
+    votes: 62_410,
+  },
+  {
+    id: 'c4',
+    name: 'Rigathi Gachagua',
+    party: 'Independent',
+    avatar: require('@/assets/images/Presidents/GachaguaImage.jpg'),
     votes: 74_852,
   },
   {
-    id: 'p2',
-    name: 'Sarah Otieno',
-    party: 'Reform Party',
-    avatar: 'https://i.pravatar.cc/150?img=45',
-    votes: 58_853,
-  },
-  {
-    id: 'p3',
-    name: 'John Musyoka',
+    id: 'c5',
+    name: 'Kalonzo Musyoka',
     party: 'Independent',
-    avatar: 'https://i.pravatar.cc/150?img=52',
-    votes: 9_142,
-  },
-];
-
-const governorCandidates: RaceCandidate[] = [
-  {
-    id: 'g1',
-    name: 'Alice Njeri',
-    party: 'United Front (UF)',
-    avatar: 'https://i.pravatar.cc/150?img=32',
-    votes: 41_200,
+    avatar: require('@/assets/images/Presidents/KalonzoImage.jpg'),
+    votes: 58_930,
   },
   {
-    id: 'g2',
-    name: 'Peter Mwangi',
-    party: 'Progressive Alliance',
-    avatar: 'https://i.pravatar.cc/150?img=60',
-    votes: 38_750,
+    id: 'c6',
+    name: 'William Ruto',
+    party: 'UDA',
+    avatar: require('@/assets/images/Presidents/RutoImage.jpg'),
+    votes: 81_540,
   },
 ];
 
@@ -54,17 +58,8 @@ export default function PresidentResults() {
       contentContainerStyle={{ paddingVertical: 16 }}
       showsVerticalScrollIndicator={false}
     >
-      {/* Presidential race — live, auto-derives total */}
       <RaceResults
-        candidates={presidentCandidates}
-        isLive={true}
-        leadingLabel="Leading Projection"
-      />
-
-      {/* Governor race — supply total explicitly */}
-      <RaceResults
-        candidates={governorCandidates}
-        totalVotes={100_000}
+        candidates={presidentialCandidates}
         isLive={true}
         leadingLabel="Leading Projection"
       />
