@@ -3,6 +3,7 @@ import PresidentResults from '@/components/AspirantGroups/President'
 import GovernorResults from '@/components/AspirantGroups/Governor'
 import MPResults from '@/components/AspirantGroups/MP'
 import MCAResults from '@/components/AspirantGroups/MCA'
+import WomenRepsResults from '@/components/AspirantGroups/WomenReps'
 
 export default function TabsComponent() {
   return (
@@ -12,6 +13,7 @@ export default function TabsComponent() {
         <TabsTrigger value="tab2">Governor</TabsTrigger>
         <TabsTrigger value="tab3">MP</TabsTrigger>
         <TabsTrigger value="tab4">MCA</TabsTrigger>
+        <TabsTrigger value="tab5">Women Rep</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
         <PresidentResults />
@@ -24,6 +26,9 @@ export default function TabsComponent() {
       </TabsContent>
       <TabsContent value="tab4">
         <MCAResults />
+      </TabsContent>
+      <TabsContent value="tab5">
+        <WomenRepsResults />
       </TabsContent>
     </Tabs>
   )
