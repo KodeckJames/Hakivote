@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { FadeInUp } from 'react-native-reanimated'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useAuthActions } from '@convex-dev/auth/react'
 
 const wait = async <T extends number>(ms: T): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
@@ -17,6 +19,10 @@ export default function App() {
 
   const [code, setCode] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
+
+  const { phone } = useLocalSearchParams()
+  const { signIn } = useAuthActions()
+  const router = useRouter()
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -59,14 +65,17 @@ export default function App() {
               fontFamily: fontLoaded ? 'HelveticaNowDisplay' : undefined,
               fontSize: 24,
             }}
-            onInputFinished={(input: string) => {
-              if (input !== '2342') {
+            onInputFinished={async (input: string) => {
+              try {
+                if (!phone) throw new Error('Phone number is missing')
+                await signIn('phone', { phone: phone as string, code: input })
+                router.replace('/(tabs)')
+              } catch (err) {
+                console.log(err)
                 setError(true)
                 wait<number>(2000).then<void, never>(() => {
                   setError(false)
                 })
-              } else {
-                alert('Verification successful!')
               }
             }}
             inputWidth={70}

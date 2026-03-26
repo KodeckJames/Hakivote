@@ -9,6 +9,8 @@
  */
 
 import type * as aspirants from "../aspirants.js";
+import type * as auth from "../auth.js";
+import type * as http from "../http.js";
 import type * as votes from "../votes.js";
 
 import type {
@@ -19,6 +21,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   aspirants: typeof aspirants;
+  auth: typeof auth;
+  http: typeof http;
   votes: typeof votes;
 }>;
 

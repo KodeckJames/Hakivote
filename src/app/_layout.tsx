@@ -4,7 +4,9 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from '@react-navigation/native'
-import { ConvexProvider, ConvexReactClient } from 'convex/react'
+import { ConvexReactClient } from 'convex/react'
+import { ConvexAuthProvider } from '@convex-dev/auth/react'
+import * as SecureStore from 'expo-secure-store'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
@@ -18,10 +20,16 @@ const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
   unsavedChangesWarning: false,
 })
 
+const secureStorage = {
+  getItem: SecureStore.getItemAsync,
+  setItem: SecureStore.setItemAsync,
+  removeItem: SecureStore.deleteItemAsync,
+}
+
 export default function TabLayout() {
   const colorScheme = useColorScheme()
   return (
-    <ConvexProvider client={convex}>
+    <ConvexAuthProvider client={convex} storage={secureStorage}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>
           <SafeAreaProvider>
@@ -55,6 +63,6 @@ export default function TabLayout() {
           </SafeAreaProvider>
         </KeyboardProvider>
       </GestureHandlerRootView>
-    </ConvexProvider>
+    </ConvexAuthProvider>
   )
 }

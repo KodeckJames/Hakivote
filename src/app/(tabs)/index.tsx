@@ -85,6 +85,20 @@ export default function HomePage() {
   const initAspirantsMutation = useMutation(api.aspirants.initAspirants)
   const castVotesMutation = useMutation(api.votes.cast)
 
+  const [voterData, setVoterData] = useState({ phone: VOTER_PHONE, county: 'Nairobi', constituency: 'Kasarani', ward: 'Clay City' })
+
+  useEffect(() => {
+    import('expo-secure-store').then(SecureStore => {
+      SecureStore.getItemAsync('voterData').then((data) => {
+        if (data) {
+          try {
+            setVoterData(JSON.parse(data))
+          } catch(e) {}
+        }
+      })
+    })
+  }, [])
+
   // Seed data if DB is empty
   useEffect(() => {
     if (aspirantsData !== undefined && aspirantsData.length === 0) {
@@ -115,7 +129,7 @@ export default function HomePage() {
           aspirantId: cId as Id<'aspirants'>,
         }))
         
-      await castVotesMutation({ voterPhone: VOTER_PHONE, selections: votesToCast })
+      await castVotesMutation({ voterPhone: voterData.phone, selections: votesToCast })
       setSubmitStatus('success')
     } catch {
       setSubmitStatus('error')
@@ -144,18 +158,18 @@ export default function HomePage() {
       <View className="flex-row items-center ml-4 gap-2">
         <Ionicons name="location" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
-          Nairobi County
+          {voterData.county} County
         </Text>
         <Ionicons name="ellipse" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
-          Kasarani Constituency
+          {voterData.constituency} Constituency
         </Text>
       </View>
 
       <View className="flex-row items-center ml-4 gap-2">
         <Ionicons name="ellipse-outline" size={20} color="green" />
         <Text className="dark:text-white font-bold text-lg mt-4">
-          Clay City Ward
+          {voterData.ward} Ward
         </Text>
       </View>
 

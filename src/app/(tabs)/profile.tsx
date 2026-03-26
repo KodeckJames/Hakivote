@@ -1,12 +1,36 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useRouter } from 'expo-router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, Text, useColorScheme, View } from 'react-native'
 import ActualVoterProfile from '@/components/ui/ActualVoterProfile'
+import { useAuthActions } from '@convex-dev/auth/react'
+import * as SecureStore from 'expo-secure-store'
 
 export default function ProfilePage() {
   const router = useRouter()
   const colorScheme = useColorScheme()
+  const { signOut } = useAuthActions()
+  const [phone, setPhone] = useState('+254700000000')
+
+  useEffect(() => {
+    SecureStore.getItemAsync('voterData').then((data) => {
+      if (data) {
+        try {
+          const parsed = JSON.parse(data)
+          if (parsed.phone) {
+            setPhone(parsed.phone)
+          }
+        } catch (e) {}
+      }
+    })
+  }, [])
+
+  const handleLogout = async () => {
+    await signOut()
+    await SecureStore.deleteItemAsync('voterData')
+    router.replace('/OnboardingPage')
+  }
+
   return (
     <View className=" flex min-h-screen">
       <View className=" flex items-center mt-4">
@@ -27,13 +51,13 @@ export default function ProfilePage() {
         {' '}
         You will receive a confirmation SMS shortly{'\n'} at{' '}
         <Text className=" text-green-900 dark:text-green-400 font-bold">
-          +254700000000
+          {phone}
         </Text>
       </Text>
       <ActualVoterProfile />
       <Pressable
-        onPress={() => router.push('/OnboardingPage')}
-        className=" bg-green-900 p-2 rounded-full absolute bottom-32 left-40 "
+        onPress={handleLogout}
+        className=" bg-green-900 p-2 rounded-full absolute bottom-32 self-center px-8"
       >
         <Text className=" dark:text-white text-center font-bold text-lg">
           Log Out
