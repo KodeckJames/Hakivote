@@ -1,139 +1,68 @@
 import BallotSection, { Candidate } from '@/components/ui/BallotSelection'
 import BallotFooter, { SubmitStatus } from '@/components/ui/BallotFooter'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
-// ─── Dummy data ───────────────────────────────────────────────────────────────
+import { useQuery, useMutation } from 'convex/react'
+import { api } from '../../../convex/_generated/api'
+import { Id } from '../../../convex/_generated/dataModel'
 
-const presidentialCandidates: Candidate[] = [
-  {
-    id: 'c1',
-    name: 'Edwin Sifuna',
-    party: 'ODM',
-    avatar: require('@/assets/images/Presidents/SifunaImage.png'),
-  },
-  {
-    id: 'c2',
-    name: 'David Maraga',
-    party: 'Independent',
-    avatar: require('@/assets/images/Presidents/MaragaImage.jpg'),
-  },
-  {
-    id: 'c3',
-    name: "Fred Matiang'i",
-    party: 'Jubilee',
-    avatar: require('@/assets/images/Presidents/MatiangiImage.jpg'),
-  },
-  {
-    id: 'c4',
-    name: 'Rigathi Gachagua',
-    party: 'Independent',
-    avatar: require('@/assets/images/Presidents/GachaguaImage.jpg'),
-  },
-  {
-    id: 'c5',
-    name: 'Kalonzo Musyoka',
-    party: 'Independent',
-    avatar: require('@/assets/images/Presidents/KalonzoImage.jpg'),
-  },
-  {
-    id: 'c6',
-    name: 'William Ruto',
-    party: 'UDA',
-    avatar: require('@/assets/images/Presidents/RutoImage.jpg'),
-  },
-]
+// ─── Dummy Avatars & Init Data ───────────────────────────────────────────────────────────────
 
-const governorCandidates: Candidate[] = [
-  {
-    id: 'g1',
-    name: 'Babu Owino',
-    party: 'ODM',
-    avatar: require('@/assets/images/Governors/BabuImage.jpg'),
-  },
-  {
-    id: 'g2',
-    name: 'Millicent Omanga',
-    party: 'Jubilee',
-    avatar: require('@/assets/images/Governors/OmangaImage.jpg'),
-  },
-  {
-    id: 'g3',
-    name: 'Johnson Sakaja',
-    party: 'UDA',
-    avatar: require('@/assets/images/Governors/SakajaImage.jpg'),
-  },
-]
-const MPCandidates: Candidate[] = [
-  {
-    id: 'mp1',
-    name: 'Ronald Karauri',
-    party: 'Independent',
-    avatar: require('@/assets/images/MPs/KarauriImage.jpeg'),
-  },
-  {
-    id: 'mp2',
-    name: 'Phelix Odiwuor',
-    party: 'ODM',
-    avatar: require('@/assets/images/MPs/JalangoImage.jpg'),
-  },
-  {
-    id: 'mp3',
-    name: 'Karen Nyamu',
-    party: 'UDA',
-    avatar: require('@/assets/images/MPs/NyamuImage.png'),
-  },
-]
-const MCACandidates: Candidate[] = [
-  {
-    id: 'mca1',
-    name: 'Mwaura Samora',
-    party: 'UDA',
-    avatar: require('@/assets/images/MCAs/SamoraImage.jpeg'),
-  },
-  {
-    id: 'mca2',
-    name: 'Kevin Gitonga',
-    party: 'ODM',
-    avatar: require('@/assets/images/MCAs/GitongaImage.jpg'),
-  },
-  {
-    id: 'mca3',
-    name: 'Brian Maina',
-    party: 'Independent',
-    avatar: require('@/assets/images/MCAs/MainaImage.jpg'),
-  },
-  {
-    id: 'mca4',
-    name: 'Hosea Wambugu',
-    party: 'Jubilee',
-    avatar: require('@/assets/images/MCAs/WambuguImage.jpg'),
-  },
-]
-const WomenRepCandidates: Candidate[] = [
-  {
-    id: 'wr1',
-    name: 'Hanifa Adan',
-    party: 'UDA',
-    avatar: require('@/assets/images/WomenReps/HanifaImage.png'),
-  },
-  {
-    id: 'wr2',
-    name: 'Esther Passaris',
-    party: 'ODM',
-    avatar: require('@/assets/images/WomenReps/PassarisImage.jpg'),
-  },
-  {
-    id: 'wr3',
-    name: 'Gloria Orwoba',
-    party: 'Independent',
-    avatar: require('@/assets/images/WomenReps/OrwobaImage.png'),
-  },
-]
+const AVATARS_MAP: Record<string, any> = {
+  'SifunaImage.png': require('@/assets/images/Presidents/SifunaImage.png'),
+  'MaragaImage.jpg': require('@/assets/images/Presidents/MaragaImage.jpg'),
+  'MatiangiImage.jpg': require('@/assets/images/Presidents/MatiangiImage.jpg'),
+  'GachaguaImage.jpg': require('@/assets/images/Presidents/GachaguaImage.jpg'),
+  'KalonzoImage.jpg': require('@/assets/images/Presidents/KalonzoImage.jpg'),
+  'RutoImage.jpg': require('@/assets/images/Presidents/RutoImage.jpg'),
+  'BabuImage.jpg': require('@/assets/images/Governors/BabuImage.jpg'),
+  'OmangaImage.jpg': require('@/assets/images/Governors/OmangaImage.jpg'),
+  'SakajaImage.jpg': require('@/assets/images/Governors/SakajaImage.jpg'),
+  'KarauriImage.jpeg': require('@/assets/images/MPs/KarauriImage.jpeg'),
+  'JalangoImage.jpg': require('@/assets/images/MPs/JalangoImage.jpg'),
+  'NyamuImage.png': require('@/assets/images/MPs/NyamuImage.png'),
+  'SamoraImage.jpeg': require('@/assets/images/MCAs/SamoraImage.jpeg'),
+  'GitongaImage.jpg': require('@/assets/images/MCAs/GitongaImage.jpg'),
+  'MainaImage.jpg': require('@/assets/images/MCAs/MainaImage.jpg'),
+  'WambuguImage.jpg': require('@/assets/images/MCAs/WambuguImage.jpg'),
+  'HanifaImage.png': require('@/assets/images/WomenReps/HanifaImage.png'),
+  'PassarisImage.jpg': require('@/assets/images/WomenReps/PassarisImage.jpg'),
+  'OrwobaImage.png': require('@/assets/images/WomenReps/OrwobaImage.png'),
+}
 
-// Races with no candidates yet — footer still tracks them as incomplete
-const senatorCandidates: Candidate[] = []
+const INITIAL_ASPIRANTS = [
+  ...[
+    { name: 'Edwin Sifuna', party: 'ODM', avatarId: 'SifunaImage.png' },
+    { name: 'David Maraga', party: 'Independent', avatarId: 'MaragaImage.jpg' },
+    { name: "Fred Matiang'i", party: 'Jubilee', avatarId: 'MatiangiImage.jpg' },
+    { name: 'Rigathi Gachagua', party: 'Independent', avatarId: 'GachaguaImage.jpg' },
+    { name: 'Kalonzo Musyoka', party: 'Independent', avatarId: 'KalonzoImage.jpg' },
+    { name: 'William Ruto', party: 'UDA', avatarId: 'RutoImage.jpg' }
+  ].map(a => ({ ...a, raceId: 'president' })),
+  ...[
+    { name: 'Babu Owino', party: 'ODM', avatarId: 'BabuImage.jpg' },
+    { name: 'Millicent Omanga', party: 'Jubilee', avatarId: 'OmangaImage.jpg' },
+    { name: 'Johnson Sakaja', party: 'UDA', avatarId: 'SakajaImage.jpg' },
+  ].map(a => ({ ...a, raceId: 'governor' })),
+  ...[
+    { name: 'Ronald Karauri', party: 'Independent', avatarId: 'KarauriImage.jpeg' },
+    { name: 'Phelix Odiwuor', party: 'ODM', avatarId: 'JalangoImage.jpg' },
+    { name: 'Karen Nyamu', party: 'UDA', avatarId: 'NyamuImage.png' },
+  ].map(a => ({ ...a, raceId: 'mp' })),
+  ...[
+    { name: 'Mwaura Samora', party: 'UDA', avatarId: 'SamoraImage.jpeg' },
+    { name: 'Kevin Gitonga', party: 'ODM', avatarId: 'GitongaImage.jpg' },
+    { name: 'Brian Maina', party: 'Independent', avatarId: 'MainaImage.jpg' },
+    { name: 'Hosea Wambugu', party: 'Jubilee', avatarId: 'WambuguImage.jpg' },
+  ].map(a => ({ ...a, raceId: 'mca' })),
+  ...[
+    { name: 'Hanifa Adan', party: 'UDA', avatarId: 'HanifaImage.png' },
+    { name: 'Esther Passaris', party: 'ODM', avatarId: 'PassarisImage.jpg' },
+    { name: 'Gloria Orwoba', party: 'Independent', avatarId: 'OrwobaImage.png' },
+  ].map(a => ({ ...a, raceId: 'womenrep' })),
+]
 
 // ─── Race IDs — must stay in sync with totalRaces={3} in BallotFooter ─────────
 
@@ -143,14 +72,25 @@ const RACE_MP = 'mp'
 const RACE_MCA = 'mca'
 const RACE_WOMENREP = 'womenrep'
 
+const VOTER_PHONE = '+254700000000'
+
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  // Map of raceId → selected candidateId (null = unselected)
-  const [selections, setSelections] = useState<Record<string, string | null>>(
-    {}
-  )
+  const [selections, setSelections] = useState<Record<string, string | null>>({})
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle')
+
+  // Convex hooks
+  const aspirantsData = useQuery(api.aspirants.getAll)
+  const initAspirantsMutation = useMutation(api.aspirants.initAspirants)
+  const castVotesMutation = useMutation(api.votes.cast)
+
+  // Seed data if DB is empty
+  useEffect(() => {
+    if (aspirantsData !== undefined && aspirantsData.length === 0) {
+      initAspirantsMutation({ aspirants: INITIAL_ASPIRANTS })
+    }
+  }, [aspirantsData, initAspirantsMutation])
 
   const handleSelection = useCallback(
     (raceId: string, candidateId: string | null) => {
@@ -159,7 +99,6 @@ export default function HomePage() {
     []
   )
 
-  // IDs of races where a candidate has been chosen
   const completedRaceIds = Object.entries(selections)
     .filter(([, candidateId]) => candidateId !== null)
     .map(([raceId]) => raceId)
@@ -169,14 +108,31 @@ export default function HomePage() {
     setSubmitStatus('loading')
 
     try {
-      // Replace with your actual API call, e.g.:
-      // await api.submitBallot(selections)
-      await new Promise((resolve) => setTimeout(resolve, 1800))
+      const votesToCast = Object.entries(selections)
+        .filter(([, cId]) => cId !== null)
+        .map(([rId, cId]) => ({
+          raceId: rId,
+          aspirantId: cId as Id<'aspirants'>,
+        }))
+        
+      await castVotesMutation({ voterPhone: VOTER_PHONE, selections: votesToCast })
       setSubmitStatus('success')
     } catch {
       setSubmitStatus('error')
       setTimeout(() => setSubmitStatus('idle'), 3000)
     }
+  }
+
+  function getCandidates(raceId: string): Candidate[] {
+    if (!aspirantsData) return []
+    return aspirantsData
+      .filter(a => a.raceId === raceId)
+      .map(a => ({
+        id: a._id.toString(),
+        name: a.name,
+        party: a.party,
+        avatar: AVATARS_MAP[a.avatarId] || ''
+      }))
   }
 
   return (
@@ -212,7 +168,7 @@ export default function HomePage() {
           category="National Executive"
           title="President"
           description="Choose one candidate to lead the Republic of Kenya for the next 5-year term."
-          candidates={presidentialCandidates}
+          candidates={getCandidates(RACE_PRESIDENT)}
           defaultExpanded={true}
           onSelectionChange={(id) => handleSelection(RACE_PRESIDENT, id)}
         />
@@ -221,7 +177,7 @@ export default function HomePage() {
           category="County Executive"
           title="Governor"
           description="Choose one candidate to lead your county for the next 5-year term."
-          candidates={governorCandidates}
+          candidates={getCandidates(RACE_GOVERNOR)}
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_GOVERNOR, id)}
         />
@@ -229,7 +185,7 @@ export default function HomePage() {
           category="County Legislature"
           title="MP"
           description="Choose your preferred MP."
-          candidates={MPCandidates}
+          candidates={getCandidates(RACE_MP)}
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_MP, id)}
         />
@@ -237,7 +193,7 @@ export default function HomePage() {
           category="County Legislature"
           title="MCA"
           description="Choose your preferred MCA."
-          candidates={MCACandidates}
+          candidates={getCandidates(RACE_MCA)}
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_MCA, id)}
         />
@@ -245,7 +201,7 @@ export default function HomePage() {
           category="County Legislature"
           title="WomenRep"
           description="Choose your preferred WomenRep."
-          candidates={WomenRepCandidates}
+          candidates={getCandidates(RACE_WOMENREP)}
           defaultExpanded={false}
           onSelectionChange={(id) => handleSelection(RACE_WOMENREP, id)}
         />
