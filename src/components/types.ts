@@ -1,87 +1,61 @@
-import type { TextStyle } from "react-native";
-import type {
-  WithSpringConfig,
-  WithTimingConfig,
-} from "react-native-reanimated";
+import {
+  type StyleProp,
+  type TextInputProps,
+  type TextStyle,
+  type ViewStyle,
+} from "react-native";
+import { LinearTransition } from "react-native-reanimated";
 
-interface CharacterAnimationParams {
-  opacity: number;
-  translateY: number;
-  scale: number;
+type AnimationVariant =
+  | "fadeSlideUp"
+  | "fadeSlideDown"
+  | "scale"
+  | "rotate"
+  | "bounce"
+  | "elastic";
+
+interface IOtpInput {
+  readonly otpCount?: number;
+  readonly containerStyle?: StyleProp<ViewStyle>;
+  readonly otpInputStyle?: StyleProp<TextStyle>;
+  readonly textStyle?: StyleProp<TextStyle>;
+  readonly focusedColor?: string;
+  readonly inputWidth?: number;
+  readonly inputHeight?: number;
+  readonly inputBorderRadius?: number;
+  readonly enableAutoFocus?: boolean;
+  readonly editable?: boolean;
+  readonly onInputFinished?: (code: string) => void;
+  readonly onInputChange?: (codes: string) => void;
+  readonly enteringAnimated?: typeof LinearTransition;
+  readonly exitingAnimated?: typeof LinearTransition;
+  readonly error?: boolean;
+  readonly errorMessage?: string;
+  readonly animationVariant?: AnimationVariant;
+  readonly focusedBackgroundColor?: string;
+  readonly unfocusedBackgroundColor?: string;
+  readonly focusedBorderColor?: string;
+  readonly unfocusedBorderColor?: string;
+  readonly errorBackgroundColor?: string;
+  readonly errorBorderColor?: string;
 }
 
-interface AnimationConfig {
-  characterDelay: number;
-  characterEnterDuration: number;
-  characterExitDuration: number;
-  buttonTransitionDuration: number;
-  spring: WithSpringConfig;
-  timing: WithTimingConfig;
-}
-
-interface TextAnimationProps {
-  text: string;
-  style?: TextStyle;
-}
-
-interface CharacterProps {
-  char: string;
-  style?: TextStyle;
+interface IOtpItem {
   index: number;
-  animationConfig: AnimationConfig;
-  enterInitial: CharacterAnimationParams;
-  enterFinal: CharacterAnimationParams;
-  exitInitial: CharacterAnimationParams;
-  exitFinal: CharacterAnimationParams;
 }
 
-interface CountdownUnit {
-  value: number;
-  label: string;
+interface IOtpContext extends IOtpInput {
+  inputRef: React.MutableRefObject<any[]>;
+  otpValue: string[];
+  onPress: () => void;
+  onFocusNext: (value: string, index: number) => void;
+  onFocusPrevious: (key: string, index: number) => void;
+  setFocus: React.Dispatch<React.SetStateAction<number>>;
+  setOtpValue: React.Dispatch<React.SetStateAction<string[]>>;
+  focus: number;
+  readonly autoFocus?: boolean;
+  readonly currentIndex?: number;
+  readonly rest?: TextInputProps;
 }
 
-interface TimeRemaining {
-  years: number;
-  months: number;
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-type CountdownSize = "small" | "medium" | "large" | "xlarge";
-
-interface CountdownCustomization {
-  readonly numberSize?: number;
-  readonly labelSize?: number;
-  readonly numberColor?: string;
-  readonly labelColor?: string;
-  readonly separatorColor?: string;
-  readonly gap?: number;
-  readonly letterSpacing?: number;
-  readonly fontWeight?: "400" | "500" | "600" | "700" | "800" | "900";
-  readonly showLabels?: boolean;
-  readonly showDays?: boolean;
-  readonly showSeparators?: boolean;
-  readonly fontFamily?: string;
-  readonly onFinish?: () => void;
-  readonly finishText?: string;
-}
-
-interface CountdownTimerProps {
-  targetDate: Date;
-  readonly size?: CountdownSize;
-  readonly customization?: CountdownCustomization;
-}
-
-export type {
-  CharacterAnimationParams,
-  AnimationConfig,
-  TextAnimationProps,
-  CharacterProps,
-  CountdownUnit,
-  TimeRemaining,
-  CountdownSize,
-  CountdownCustomization,
-  CountdownTimerProps,
-};
+export type { IOtpInput, IOtpContext, AnimationVariant, IOtpItem };
