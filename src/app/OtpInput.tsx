@@ -1,17 +1,16 @@
 import OtpInput from '@/components/base/otp-input'
+import { useAuthActions } from '@convex-dev/auth/react'
 import { useFonts } from 'expo-font'
-import { SymbolView } from 'expo-symbols'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { FadeInUp } from 'react-native-reanimated'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useAuthActions } from '@convex-dev/auth/react'
 
 const wait = async <T extends number>(ms: T): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-export default function App() {
+export default function OtpInputPage() {
   const [fontLoaded] = useFonts({
     SfProRounded: require('@/assets/fonts/sf-pro-rounded.ttf'),
     HelveticaNowDisplay: require('@/assets/fonts/HelveticaNowDisplayMedium.ttf'),
